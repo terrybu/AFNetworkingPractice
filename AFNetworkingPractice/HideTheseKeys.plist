@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AccessToken</key>
+	<string>bearer 21f2b76dfc396b97dff36851fc4eac76</string>
+	<key>AuthorizationHeader</key>
+	<string>Basic NzI5MjEyMDM1ZGQ3YjFhZjIzYzA0ZDk2ODY4ZDg4MTkzYWEwMjI5OTo1ZmFmMGYxNDA1NzQ0MzU1ZmIxM2EzNjQ1MzAwMGFkMTVlMjYzN2Qw</string>
+</dict>
+</plist>

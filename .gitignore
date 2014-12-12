@@ -1,13 +1,14 @@
+HideTheseKeys.plist
+
+
 *.pem
 *.zip
-
 *.png
 *.jpeg
 *.jpg
 *.gif
 *.mp3
 *.wav
-
 *.json
 
 # Xcode
