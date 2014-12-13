@@ -10,6 +10,7 @@
 #import <AFNetworking.h>
 #import "TerryCollectionViewCell.h"
 #import "Video.h"
+#import <UIImageView+AFNetworking.h>
 
 @interface ViewController ()
 
@@ -17,6 +18,7 @@
     NSMutableArray *videosArray;
 }
 
+@property (strong, nonatomic) IBOutlet UIImageView *practiceImageView;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
@@ -76,7 +78,22 @@ static NSString* const reuseIdentifier = @"Cell";
             NSDictionary *oneVideoDictionary = dataArrayFromJSON[i];
             Video *video = [[Video alloc]init];
             video.videoName = [oneVideoDictionary valueForKey:@"name"];
+            
+            NSDictionary *user = [oneVideoDictionary valueForKey:@"user"];
+            video.videoCreatorName = [user valueForKey:@"name"];
+            
+            NSDictionary *pictures = [oneVideoDictionary valueForKey:@"pictures"];
+            NSArray *sizesArray = [pictures valueForKey:@"sizes"];
+            
+            NSDictionary *sizeObject = sizesArray[i];
+            NSString *linkImageURL = [sizeObject valueForKey:@"link"];
+            video.videoImageURL = linkImageURL;
+    
+            [self.practiceImageView setImageWithURL:[NSURL URLWithString:video.videoImageURL]];
+
             [videosArray addObject:video];
+
+
         }
         
         [self.collectionView reloadData];
@@ -97,25 +114,7 @@ static NSString* const reuseIdentifier = @"Cell";
         NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
     }];
     
-    
-    NSURL *baseURL = [NSURL URLWithString:@"http://www.terrybu.com/index.php"];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
-    
-    NSOperationQueue *operationQueue = manager.operationQueue;
-    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                [operationQueue setSuspended:NO];
-                break;
-            case AFNetworkReachabilityStatusNotReachable:
-            default:
-                [operationQueue setSuspended:YES];
-                break;
-        }
-    }];
-    
-    [manager.reachabilityManager startMonitoring];
+    [httpManager.reachabilityManager startMonitoring];
     
 }
 
@@ -140,8 +139,16 @@ static NSString* const reuseIdentifier = @"Cell";
     TerryCollectionViewCell *cell = (TerryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     Video *video = [videosArray objectAtIndex:indexPath.row];
+
+    NSLog(@"%@", video.videoImageURL);
+
+
+    [cell.videoThumbImageView setImageWithURL:[NSURL URLWithString:video.videoImageURL]];
+    
+    cell.videoCreatorNameLabel.text = video.videoCreatorName;
     
     cell.videoLabel.text = video.videoName;
+
     
     return cell;
 }

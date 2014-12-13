@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface Video : NSObject
 
 @property (nonatomic, strong) NSString *videoName;
 @property (nonatomic, strong) NSString *videoCreatorName;
-@property (nonatomic, strong) NSString *videoThumbImageURL;
+@property (nonatomic, strong) NSString *videoImageURL;
 
 @end

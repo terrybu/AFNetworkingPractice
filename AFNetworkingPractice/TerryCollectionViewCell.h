@@ -11,6 +11,7 @@
 @interface TerryCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UILabel *videoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *videoCreatorNameLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *videoThumbImageView;
 
 
