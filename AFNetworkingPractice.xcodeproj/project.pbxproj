@@ -17,6 +17,8 @@
 		AAC78CE91A3B54AF00921154 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAC78CE71A3B54AF00921154 /* LaunchScreen.xib */; };
 		AAC78CF51A3B54AF00921154 /* AFNetworkingPracticeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC78CF41A3B54AF00921154 /* AFNetworkingPracticeTests.m */; };
 		AAC78CFF1A3B791000921154 /* HideTheseKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC78CFE1A3B791000921154 /* HideTheseKeys.plist */; };
+		AAD8F61E1A3CCC9000B83CD3 /* TerryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F61D1A3CCC9000B83CD3 /* TerryCollectionViewCell.m */; };
+		AAD8F6211A3CCDAA00B83CD3 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD8F6201A3CCDAA00B83CD3 /* Video.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,10 @@
 		AAC78CF31A3B54AF00921154 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAC78CF41A3B54AF00921154 /* AFNetworkingPracticeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingPracticeTests.m; sourceTree = "<group>"; };
 		AAC78CFE1A3B791000921154 /* HideTheseKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HideTheseKeys.plist; sourceTree = "<group>"; };
+		AAD8F61C1A3CCC9000B83CD3 /* TerryCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerryCollectionViewCell.h; sourceTree = "<group>"; };
+		AAD8F61D1A3CCC9000B83CD3 /* TerryCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerryCollectionViewCell.m; sourceTree = "<group>"; };
+		AAD8F61F1A3CCDAA00B83CD3 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		AAD8F6201A3CCDAA00B83CD3 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
 		C025D44B131029EA5850F193 /* libPods-AFNetworkingPractice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFNetworkingPractice.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,12 +106,16 @@
 		AAC78CD41A3B54AF00921154 /* AFNetworkingPractice */ = {
 			isa = PBXGroup;
 			children = (
+				AAC78CFE1A3B791000921154 /* HideTheseKeys.plist */,
 				AAC78CD91A3B54AF00921154 /* AppDelegate.h */,
 				AAC78CDA1A3B54AF00921154 /* AppDelegate.m */,
 				AAC78CDF1A3B54AF00921154 /* ViewController.h */,
 				AAC78CE01A3B54AF00921154 /* ViewController.m */,
-				AAC78CFE1A3B791000921154 /* HideTheseKeys.plist */,
+				AAD8F61F1A3CCDAA00B83CD3 /* Video.h */,
+				AAD8F6201A3CCDAA00B83CD3 /* Video.m */,
 				AAC78CE21A3B54AF00921154 /* Main.storyboard */,
+				AAD8F61C1A3CCC9000B83CD3 /* TerryCollectionViewCell.h */,
+				AAD8F61D1A3CCC9000B83CD3 /* TerryCollectionViewCell.m */,
 				AAC78CE51A3B54AF00921154 /* Images.xcassets */,
 				AAC78CE71A3B54AF00921154 /* LaunchScreen.xib */,
 				AAC78CDC1A3B54AF00921154 /* AFNetworkingPractice.xcdatamodeld */,
@@ -287,6 +297,8 @@
 			files = (
 				AAC78CDB1A3B54AF00921154 /* AppDelegate.m in Sources */,
 				AAC78CD81A3B54AF00921154 /* main.m in Sources */,
+				AAD8F61E1A3CCC9000B83CD3 /* TerryCollectionViewCell.m in Sources */,
+				AAD8F6211A3CCDAA00B83CD3 /* Video.m in Sources */,
 				AAC78CE11A3B54AF00921154 /* ViewController.m in Sources */,
 				AAC78CDE1A3B54AF00921154 /* AFNetworkingPractice.xcdatamodeld in Sources */,
 			);
