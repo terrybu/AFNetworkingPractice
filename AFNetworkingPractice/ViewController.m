@@ -2,7 +2,7 @@
 //  ViewController.m
 //  AFNetworkingPractice
 //
-//  Created by Aditya Narayan on 12/12/14.
+//  Created by Terry Bu on 12/12/14.
 //  Copyright (c) 2014 TerryBuOrganization. All rights reserved.
 //
 
@@ -16,10 +16,14 @@
 
 {
     NSMutableArray *videosArray;
+
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *practiceImageView;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) NSCache * imageCache;
+@property (strong, nonatomic) NSOperationQueue *imageDownloadQueue;
+
 
 @end
 
@@ -33,8 +37,10 @@ static NSString* const reuseIdentifier = @"Cell";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
-    
+    self.imageCache = [[NSCache alloc] init];
+    self.imageCache.countLimit = 50; //maximum # of objects our cache should hold
+    self.imageDownloadQueue = [NSOperationQueue new];
+
     NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"HideTheseKeys" ofType:@"plist"]];
     NSString *accessToken = [dictionary objectForKey:@"AccessToken"];
     
@@ -68,7 +74,6 @@ static NSString* const reuseIdentifier = @"Cell";
                                      };
     
     [httpManager GET:@"https://api.vimeo.com/channels/staffpicks/videos" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"JSON: %@", responseObject);
         
         NSArray *dataArrayFromJSON = responseObject[@"data"];
         videosArray = [[NSMutableArray alloc]init];
@@ -89,26 +94,15 @@ static NSString* const reuseIdentifier = @"Cell";
             NSString *linkImageURL = [sizeObject valueForKey:@"link"];
             video.videoImageURL = linkImageURL;
     
-            [self.practiceImageView setImageWithURL:[NSURL URLWithString:video.videoImageURL]];
-
             [videosArray addObject:video];
-
-
         }
-        
+        Video *firstVideo = videosArray[0];
+        [self.practiceImageView setImageWithURL:[NSURL URLWithString:firstVideo.videoImageURL]];
         [self.collectionView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
-    
-    
-    
-    
-    
-    
-    
-    
     
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
@@ -116,6 +110,7 @@ static NSString* const reuseIdentifier = @"Cell";
     
     [httpManager.reachabilityManager startMonitoring];
     
+
 }
 
 
@@ -135,21 +130,47 @@ static NSString* const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     // Configure the cell
-    
     TerryCollectionViewCell *cell = (TerryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     Video *video = [videosArray objectAtIndex:indexPath.row];
 
-    NSLog(@"%@", video.videoImageURL);
-
-
-    [cell.videoThumbImageView setImageWithURL:[NSURL URLWithString:video.videoImageURL]];
+    UIImage *cachedImage = [self.imageCache objectForKey:video.videoImageURL];;
+    
+    if (cachedImage) {
+        NSLog(@"calling from cache!! NOT THE INTERNET WOOO!");
+        cell.videoThumbImageView.image = cachedImage;
+    }
+    else {
+        //if cachedImage doesn't exist, it means it never got cached so get the image from the internet and then build our cache
+        //but first, let's just have a placeHolder image on there just so that we know something is happening, and we get something on there
+        cell.videoThumbImageView.image = [UIImage imageNamed:@"placeHolder"];
+        
+        [self.imageDownloadQueue addOperationWithBlock:^{
+            //start a background queue and get the image data asynchronously using NSOperationQueue and the image url
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:video.videoImageURL]];
+            UIImage *image = nil;
+            if (imageData) //if we got imageData, we make the image
+                image = [UIImage imageWithData:imageData];
+            if (image)
+                //if we made the image, then we push it into the cache.
+                //Cache is just a dictionary, where key is our imgURL and value is the UIImage
+                [self.imageCache setObject:image forKey:video.videoImageURL];
+            
+            //And when we are done making this cache, we go back to the main queue to update our cell because we can't do UI in the background thread. In this block below, we lose reference to the cell so we gotta pointer again.
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                TerryCollectionViewCell *updateCell = (TerryCollectionViewCell *) [collectionView cellForItemAtIndexPath:indexPath];
+                updateCell.videoThumbImageView.image = image;
+            }];
+        }];
+    }
+    
+    
+    
+    //This code is a part of AFNetworking that makes it really easy to asynchronously get an image and set it
+//    [cell.videoThumbImageView setImageWithURL:[NSURL URLWithString:video.videoImageURL]];
     
     cell.videoCreatorNameLabel.text = video.videoCreatorName;
-    
     cell.videoLabel.text = video.videoName;
-
-    
     return cell;
 }
 
